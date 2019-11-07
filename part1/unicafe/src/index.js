@@ -27,17 +27,26 @@ const Statistics = ({ good, neutral, bad }) => {
   const average = (good - bad) / total;
   const posp = ((good / total) * 100).toFixed(2) + " %";
 
-  return (
-    <div>
-      <Header header="Statistics" />
-      <div>Good: {good}</div>
-      <div>Neutral: {neutral}</div>
-      <div>Bad: {bad}</div>
-      <div>All: {total}</div>
-      <div>Average: {average}</div>
-      <div>Positive: {posp}</div>
-    </div>
-  );
+  if (total > 0) {
+    return (
+      <div>
+        <Header header="Statistics" />
+        <div>Good: {good}</div>
+        <div>Neutral: {neutral}</div>
+        <div>Bad: {bad}</div>
+        <div>All: {total}</div>
+        <div>Average: {average}</div>
+        <div>Positive: {posp}</div>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Header header="Statistics" />
+        <div>No feedback given</div>
+      </div>
+    );
+  }
 };
 
 ReactDOM.render(<App />, document.getElementById("root"));
