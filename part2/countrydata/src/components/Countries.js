@@ -2,12 +2,12 @@ import React from "react";
 import Country from "./Country";
 import CountryDetail from "./CountryDetail";
 
-const Countries = ({ countries, filter }) => {
+const Countries = ({ countries, filter, setFilter }) => {
   const filtered = countries.filter(country =>
     country.name.toLowerCase().includes(filter.toLowerCase())
   );
   const rows = () => {
-    return filtered.map(country => <Country key={country.name} country={country} />);
+    return filtered.map(country => <Country key={country.name} country={country} setFilter={setFilter} />);
   };
 
   if (filtered.length > 10) {
