@@ -1,7 +1,7 @@
 import React from "react";
+import CapitalWeather from "./CapitalWeather"
 
-const CountryDetail = ({ country }) => {
-
+const CountryDetail = ({ country, setWeather, weather }) => {
   const langlist = () => {
     return country.languages.map(lang => <li key={lang.name}>{lang.name}</li>);
   };
@@ -15,6 +15,7 @@ const CountryDetail = ({ country }) => {
         {langlist()}
       </ul>
       <img src={country.flag} alt={country.name + "flag"} height="100" />
+      <CapitalWeather country={country} weather={weather} setWeather={setWeather} />
     </div>
 
   )

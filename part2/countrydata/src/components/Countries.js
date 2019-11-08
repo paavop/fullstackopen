@@ -2,7 +2,7 @@ import React from "react";
 import Country from "./Country";
 import CountryDetail from "./CountryDetail";
 
-const Countries = ({ countries, filter, setFilter }) => {
+const Countries = ({ countries, filter, setFilter, weather, setWeather }) => {
   const filtered = countries.filter(country =>
     country.name.toLowerCase().includes(filter.toLowerCase())
   );
@@ -15,7 +15,7 @@ const Countries = ({ countries, filter, setFilter }) => {
   }
 
   if (filtered.length === 1) {
-    return <CountryDetail country={filtered[0]}/>
+    return <CountryDetail country={filtered[0]} weather={weather} setWeather={setWeather}/>
   }
 
   return <div>{rows()}</div>;
