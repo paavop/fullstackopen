@@ -10,13 +10,19 @@ const App = () => {
   return (
     <div>
       <Header header="Give feedback" />
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button onClick={() => setGood(good + 1)} text="good"></Button>
+      <Button onClick={() => setNeutral(neutral + 1)} text="neutral"></Button>
+      <Button onClick={() => setBad(bad + 1)} text="bad"></Button>
       <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   );
 };
+
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}>
+    {text}
+  </button>
+  )
 
 const Header = ({ header }) => {
   return <h1>{header}</h1>;
@@ -31,12 +37,12 @@ const Statistics = ({ good, neutral, bad }) => {
     return (
       <div>
         <Header header="Statistics" />
-        <div>Good: {good}</div>
-        <div>Neutral: {neutral}</div>
-        <div>Bad: {bad}</div>
-        <div>All: {total}</div>
-        <div>Average: {average}</div>
-        <div>Positive: {posp}</div>
+        <Statistic text="Good" value={good}></Statistic>
+        <Statistic text="Neutral" value={neutral}></Statistic>
+        <Statistic text="Bad" value={bad}></Statistic>
+        <Statistic text="All" value={total}></Statistic>
+        <Statistic text="Average" value={average}></Statistic>
+        <Statistic text="Positive" value={posp}></Statistic>
       </div>
     );
   } else {
@@ -48,5 +54,11 @@ const Statistics = ({ good, neutral, bad }) => {
     );
   }
 };
+
+const Statistic = ({text, value}) => {
+    return(
+        <div>{text}: {value}</div>
+    )
+}
 
 ReactDOM.render(<App />, document.getElementById("root"));
