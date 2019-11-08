@@ -8,26 +8,45 @@ const App = props => {
   const [votes, setVotes] = useState(new Array(anecdoteCount).fill(0));
 
   const addVote = () => {
-    const copy = { ...votes };
+    const copy = [ ...votes ];
     copy[selected] += 1;
     setVotes(copy);
   };
 
   return (
     <div>
+      <Header header="Anecdote of the day" />
       <div>{props.anecdotes[selected]}</div>
-      <Votes votes={votes} selected={selected}></Votes>
+      <Votes votes={votes} selected={selected} />
       <Button onClick={addVote} text="vote" />
       <Button
         onClick={() => setSelected(Math.floor(Math.random() * anecdoteCount))}
         text="next anecdote"
       />
+      <Header header="Anecdote with most votes" />
+      <BestAnecdote votes={votes} anecdotes={props.anecdotes} />
+    </div>
+  );
+};
+
+const BestAnecdote = ({ votes, anecdotes }) => {
+  const mostVotes = Math.max(...votes);
+  const index = votes.indexOf(mostVotes);
+
+  return (
+    <div>
+      <div>{anecdotes[index]}</div>
+      <div>Has {mostVotes} votes!</div>
     </div>
   );
 };
 
 const Votes = ({ votes, selected }) => {
   return <div>Votes: {votes[selected]}</div>;
+};
+
+const Header = ({ header }) => {
+  return <h1>{header}</h1>;
 };
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
