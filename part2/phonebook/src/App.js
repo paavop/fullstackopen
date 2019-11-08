@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import Person from "./components/Person";
+import Persons from "./components/Persons";
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -12,60 +14,21 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
 
-  const handleNameChange = event => {
-    setNewName(event.target.value);
-  };
-
-  const handleNumberChange = event => {
-    setNewNumber(event.target.value);
-  };
-
-  const handleFilterChange = event => {
-    setFilter(event.target.value);
-  };
-
-  const addName = event => {
-    event.preventDefault();
-    if (persons.filter(person => person.name === newName).length) {
-      alert(`${newName} is already added to phonebook`);
-    } else {
-      const personObject = {
-        name: newName,
-        number: newNumber
-      };
-      setPersons(persons.concat(personObject));
-      setNewName("");
-      setNewNumber("");
-    }
-  };
-
-  const rows = () =>
-    persons
-      .filter(person =>
-        person.name.toLowerCase().includes(filter.toLowerCase())
-      )
-      .map(p => <Person key={p.name} person={p} />);
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter: <input value={filter} onChange={handleFilterChange} />
-      </div>
+      <Filter filter={filter} setFilter={setFilter} />
       <h2>Add new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        newName={newName}
+        setNewName={setNewName}
+        newNumber={newNumber}
+        setNewNumber={setNewNumber}
+        persons={persons}
+        setPersons={setPersons}
+      />
       <h2>Numbers</h2>
-      {rows()}
+      <Persons persons={persons} filter={filter} />
     </div>
   );
 };
