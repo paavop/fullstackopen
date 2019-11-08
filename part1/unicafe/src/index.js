@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import "./index.css";
 
 const App = () => {
   // save clicks of each button to own state
@@ -10,19 +11,15 @@ const App = () => {
   return (
     <div>
       <Header header="Give feedback" />
-      <Button onClick={() => setGood(good + 1)} text="good"></Button>
-      <Button onClick={() => setNeutral(neutral + 1)} text="neutral"></Button>
-      <Button onClick={() => setBad(bad + 1)} text="bad"></Button>
+      <Button onClick={() => setGood(good + 1)} text="good" />
+      <Button onClick={() => setNeutral(neutral + 1)} text="neutral" />
+      <Button onClick={() => setBad(bad + 1)} text="bad" />
       <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   );
 };
 
-const Button = ({ onClick, text }) => (
-  <button onClick={onClick}>
-    {text}
-  </button>
-  )
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
 const Header = ({ header }) => {
   return <h1>{header}</h1>;
@@ -37,12 +34,16 @@ const Statistics = ({ good, neutral, bad }) => {
     return (
       <div>
         <Header header="Statistics" />
-        <Statistic text="Good" value={good}></Statistic>
-        <Statistic text="Neutral" value={neutral}></Statistic>
-        <Statistic text="Bad" value={bad}></Statistic>
-        <Statistic text="All" value={total}></Statistic>
-        <Statistic text="Average" value={average}></Statistic>
-        <Statistic text="Positive" value={posp}></Statistic>
+        <table>
+          <tbody>
+            <Statistic text="Good" value={good} />
+            <Statistic text="Neutral" value={neutral} />
+            <Statistic text="Bad" value={bad} />
+            <Statistic text="All" value={total} />
+            <Statistic text="Average" value={average} />
+            <Statistic text="Positive" value={posp} />
+          </tbody>
+        </table>
       </div>
     );
   } else {
@@ -55,10 +56,13 @@ const Statistics = ({ good, neutral, bad }) => {
   }
 };
 
-const Statistic = ({text, value}) => {
-    return(
-        <div>{text}: {value}</div>
-    )
-}
+const Statistic = ({ text, value }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  );
+};
 
 ReactDOM.render(<App />, document.getElementById("root"));
