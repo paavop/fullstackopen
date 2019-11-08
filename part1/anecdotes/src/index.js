@@ -3,14 +3,31 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 const App = props => {
+  const anecdoteCount = anecdotes.length;
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdoteCount).fill(0));
+
+  const addVote = () => {
+    const copy = { ...votes };
+    copy[selected] += 1;
+    setVotes(copy);
+  };
 
   return (
     <div>
       <div>{props.anecdotes[selected]}</div>
-      <Button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} text="next anecdote" />
+      <Votes votes={votes} selected={selected}></Votes>
+      <Button onClick={addVote} text="vote" />
+      <Button
+        onClick={() => setSelected(Math.floor(Math.random() * anecdoteCount))}
+        text="next anecdote"
+      />
     </div>
   );
+};
+
+const Votes = ({ votes, selected }) => {
+  return <div>Votes: {votes[selected]}</div>;
 };
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
