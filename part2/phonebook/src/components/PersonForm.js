@@ -7,7 +7,8 @@ const PersonForm = ({
   setPersons,
   newName,
   newNumber,
-  persons
+  persons,
+  setNotification
 }) => {
   const handleNameChange = event => {
     setNewName(event.target.value);
@@ -28,6 +29,10 @@ const PersonForm = ({
         const oldPerson = persons.find(p => p.name === newName);
         const newPerson = { ...oldPerson, number: newNumber };
         personService.update(oldPerson.id, newPerson).then(returnedPerson => {
+          setNotification({ text: `Updated number for ${oldPerson.name}`});
+          setTimeout(() => {
+            setNotification({});
+          }, 5000);
           setPersons(persons.map(p => (p.id !== oldPerson.id ? p : newPerson)));
         });
       }
@@ -38,6 +43,10 @@ const PersonForm = ({
       };
 
       personService.create(personObject).then(newPerson => {
+        setNotification({text: `Added number for ${personObject.name}`});
+        setTimeout(() => {
+          setNotification({});
+        }, 5000);
         setPersons(persons.concat(newPerson));
         setNewName("");
         setNewNumber("");
