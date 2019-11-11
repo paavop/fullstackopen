@@ -1,5 +1,5 @@
 import React from "react";
-import personService from '../services/persons'
+import personService from "../services/persons";
 
 const PersonForm = ({
   setNewName,
@@ -20,7 +20,17 @@ const PersonForm = ({
   const addName = event => {
     event.preventDefault();
     if (persons.filter(person => person.name === newName).length) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const oldPerson = persons.find(p => p.name === newName);
+        const newPerson = { ...oldPerson, number: newNumber };
+        personService.update(oldPerson.id, newPerson).then(returnedPerson => {
+          setPersons(persons.map(p => (p.id !== oldPerson.id ? p : newPerson)));
+        });
+      }
     } else {
       const personObject = {
         name: newName,
