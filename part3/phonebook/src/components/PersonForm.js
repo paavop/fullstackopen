@@ -34,6 +34,16 @@ const PersonForm = ({
             setNotification({});
           }, 5000);
           setPersons(persons.map(p => (p.id !== oldPerson.id ? p : newPerson)));
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          setNotification({
+            text: `Error: '${error.response.data.error}'`,
+            type: 'error'
+          });
+          setTimeout(() => {
+            setNotification({});
+          }, 5000);
         });
       }
     } else {
@@ -51,8 +61,9 @@ const PersonForm = ({
         setNewName("");
         setNewNumber("");
       }).catch(error => {
+        console.log(error.response.data)
         setNotification({
-          text: `Error: '${error}'`,
+          text: `Error: '${error.response.data.error}'`,
           type: 'error'
         });
         setTimeout(() => {
