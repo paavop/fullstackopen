@@ -1,46 +1,47 @@
 require('dotenv').config()
-const express = require("express");
-const app = express();
-const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const cors = require('cors');
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
+const cors = require('cors')
 const Person = require('./models/person')
+const process = require('process')
 
 app.use(express.static('build'))
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 app.use(
   morgan(function (tokens, req, res) {
     return [
       tokens.method(req, res),
       tokens.url(req, res),
       tokens.status(req, res),
-      tokens.res(req, res, "content-length"),
-      "-",
-      tokens["response-time"](req, res),
-      "ms",
+      tokens.res(req, res, 'content-length'),
+      '-',
+      tokens['response-time'](req, res),
+      'ms',
       (tokens.method(req, res) === 'POST' && req.body) ? JSON.stringify(req.body) : '',
-    ].join(" ");
+    ].join(' ')
   })
-);
-app.use(cors());
+)
+app.use(cors())
 
-app.get("/info", (req, res) => {
+app.get('/info', (req, res) => {
   Person.find({}).then(people => {
-    const time = new Date();
+    const time = new Date()
     res.send(
       `<div>Phonebook has info for ${people.length} people<br>${time}</div>`
-    );
+    )
   })
-});
+})
 
-app.get("/api/persons", (req, res) => {
+app.get('/api/persons', (req, res) => {
   Person.find({}).then(people => {
     res.json(people)
   })
-});
+})
 
-app.get("/api/persons/:id", (request, response, next) => {
+app.get('/api/persons/:id', (request, response, next) => {
   console.log(request.params.id)
   Person.findById(request.params.id).then(person => {
     if (person) {
@@ -50,22 +51,22 @@ app.get("/api/persons/:id", (request, response, next) => {
     }
   })
     .catch(error => next(error))
-});
+})
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
 
-app.post("/api/persons", (request, response, next) => {
-  const body = request.body;
+app.post('/api/persons', (request, response, next) => {
+  const body = request.body
   if (!body.name || !body.number) {
     return response.status(400).json({
-      error: "content missing"
-    });
+      error: 'content missing'
+    })
   }
 
   const person = new Person({
@@ -75,10 +76,10 @@ app.post("/api/persons", (request, response, next) => {
 
   person.save().then(savedPerson => {
     console.log('person saved!')
-    response.json(savedPerson.toJSON());
+    response.json(savedPerson.toJSON())
   })
-  .catch(error => next(error))
-});
+    .catch(error => next(error))
+})
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
@@ -112,5 +113,5 @@ app.use(errorHandler)
 
 const port = process.env.PORT
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+  console.log(`Server running on port ${port}`)
+})
